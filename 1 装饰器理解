@@ -1,0 +1,20 @@
+#下列代码分析
+def add(*x):
+    args = [*x]
+    def _add(*y):
+        print("x={} y={}".format(x,y))
+        if y:
+            args.extend(y)
+            return _add  #内部多次调用add(1)(2)(3) ,此处调用(2)(3)的形式
+        else:
+            return sum(args)
+    return _add
+
+res0 = add(1)
+print(res0())  #add(1)()
+
+res1 = add(1)(2)(3)
+print(res1())   #add(1)(2)(3)()  (2)(3)()为内层函数的参数，反复调用
+
+res2 = add(1,2,3,4)(5)
+print(res2())  #add(1,2,3,4)(5)()
